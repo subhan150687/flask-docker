@@ -5,4 +5,7 @@ services:
                 build: ./flaskapp-docker
                 ports:
                         - "80:8000"
+                volumes:
+                        - ./data:/opt/data
+
                 
