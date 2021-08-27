@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.js"></script>
+</head>
+
+<body>
+    <div style="margin-top: 50px;" class="ui container">
+        <h1 class="ui center aligned header">Shopping List</h1>
+        {% for item in item_list %}
+        <div class="ui segment">
+            <p class="ui big header">{{item["name"] }} | {{ item["quantity"] }}
+            <a class="ui blue button" href="/update/{{item["name"]}}">+</a>
+	    <a class="ui red button" href="/delete/{{item["name"]}}">-</a></p>
+        </div>
+        {% endfor %}
+        <hr>
+        <form class="ui form" action="/add" method="post">
+            <div class="field">
+                <label>Item Name</label>
+                <input type="text" name="name" placeholder="Enter Item..."><br>
+            </div>
+            <button class="ui blue button" type="submit">Add</button>
+        </form>
+        <form class="ui form" action="/send" method="post">
+            <div class="field">
+		<label>message</label>
+                <input type="text" name="message" placeholder="Enter Message..."><br>
+            </div>
+            <button class="ui blue button" type="submit">Send</button>
+        </form>
+    </div>
+</body>
+
+</html>
