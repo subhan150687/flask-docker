@@ -1,11 +1,30 @@
 version: "3"
 
 services:
-        flaskapp:
+        flask:
                 build: ./flaskapp-docker
+                container_name: flask
                 ports:
-                        - "80:8000"
+                        - "8000:8000"
                 volumes:
                         - ./data:/opt/data
+                networks:
+                        my-network:
+                                aliases:
+                                        - flask-app
+        nginx:
+                build: ./nginx
+                container_name: nginx
+                environment:
+                        - SERVER_NAME=18.117.14.8
+                restart: always
+                ports:
+                        - "80:80"
+                networks:
+                        - my-network
+                depends_on:
+                        - flask
+networks:
+        my-network:
 
                 
