@@ -34,9 +34,6 @@ mail = Mail(app)
 def home():
     response = table.scan()
     item_list = response['Items']
-   # with open('data/items.json') as f:
-    #    item_list=json.load(f)
-    #print(todo_list)
     return render_template("base.html", item_list=item_list)
 
 
@@ -46,20 +43,13 @@ def add():
     quantity = 0
     new_item = {"Name":name, "Qty":quantity, "Cat":'default'}
     response = table.put_item(Item=new_item)
-   # with open('data/items.json','r') as f:
-    #    item_list=json.load(f)
-   # item_list.append(new_item)
-   # with open('data/items.json','w') as f:
-   #     json.dump(item_list,f)
     return redirect(url_for("home"))
 
 @app.route("/send", methods=["POST"])
 def send():
     msg = request.form.get("message")
-    #with open('data/items.json') as f:
     response = table.scan()
     item_list = response['Items']
-    #    item_list=json.load(f)
     item_msg = msg + '\r\n'
     for item in item_list:
         item_msg = item_msg + item["Name"] + '--' + str(item["Qty"]) + '--' + item["Cat"] +  '\r\n'
@@ -77,17 +67,6 @@ def update(item_details):
             UpdateExpression='SET Qty= :newQty',
             ExpressionAttributeValues={':newQty':str(int(Qty)+1)},
             ReturnValues="UPDATED_NEW")
-            
-
-   # with open('data/items.json','r') as f:
-    #    item_list=json.load(f)
-   # for item in item_list:
-    #    if item["name"]==item_name:
-     #       if item["quantity"]>=0 and item["quantity"]<=9:
-      #          item["quantity"]=item["quantity"]+1
-       #     break
-   # with open('data/items.json','w') as f:
-    #    json.dump(item_list,f)
     return redirect(url_for("home"))
 
 
@@ -100,14 +79,5 @@ def delete(item_details):
             UpdateExpression='SET Qty= :newQty',
             ExpressionAttributeValues={':newQty':str(int(Qty)-1)},
             ReturnValues="UPDATED_NEW")
-    #with open('data/items.json','r') as f:
-     #   item_list=json.load(f)
-    #for item in item_list:
-     #   if item["name"]==item_name:
-      #      if item["quantity"]!=0:
-       #         item["quantity"]=item["quantity"]-1
-        #    break
-   # with open('data/items.json','w') as f:
-    #    json.dump(item_list,f)
     return redirect(url_for("home"))
 

@@ -6,8 +6,6 @@ services:
                 container_name: flask
                 ports:
                         - "8000:8000"
-                volumes:
-                        - ./data:/opt/data
                 networks:
                         my-network:
                                 aliases:
