@@ -45,7 +45,7 @@ def add():
     name = request.form.get("name")
     quantity = 0
     new_item = {"Name":name, "Qty":quantity, "Cat":'default'}
-    response = table.put_item(new_item)
+    response = table.put_item(Item=new_item)
    # with open('data/items.json','r') as f:
     #    item_list=json.load(f)
    # item_list.append(new_item)
@@ -62,17 +62,19 @@ def send():
     #    item_list=json.load(f)
     item_msg = msg + '\r\n'
     for item in item_list:
-        item_msg = item_msg + item["Name"] + '--' + item["Qty"] + '--' + item["Cat"] +  '\r\n'
+        item_msg = item_msg + item["Name"] + '--' + str(item["Qty"]) + '--' + item["Cat"] +  '\r\n'
     message = Message('Shopping List', sender = 'meerabibishaik@gmail.com', recipients = ['subhan150687@gmail.com'])
     message.body = item_msg
     mail.send(message)
     return redirect(url_for("home"))
 
-@app.route("/update/<string:item_name>")
-def update(item_name):
+@app.route("/update/<string:item_details>")
+def update(item_details):
+    updated_item_details = item_details.split('&')
+    Qty = updated_item_details[1]
+    item_name = updated_item_details[0]
     response = table.update_item(Key={'Name':item_name},
             UpdateExpression='SET Qty= :newQty',
-            ConditionExpression='Qty>=0 and Qty<=91',
             ExpressionAttributeValues={':newQty':str(int(Qty)+1)},
             ReturnValues="UPDATED_NEW")
             
@@ -89,12 +91,13 @@ def update(item_name):
     return redirect(url_for("home"))
 
 
-@app.route("/delete/<string:item_name>")
-def delete(item_name):
-    
+@app.route("/delete/<string:item_details>")
+def delete(item_details):
+    deleted_item_details = item_details.split('&')
+    item_name = deleted_item_details[0]
+    Qty = deleted_item_details[1]    
     response = table.update_item(Key={'Name':item_name},
             UpdateExpression='SET Qty= :newQty',
-            ConditionExpression='Qty!=0',
             ExpressionAttributeValues={':newQty':str(int(Qty)-1)},
             ReturnValues="UPDATED_NEW")
     #with open('data/items.json','r') as f:

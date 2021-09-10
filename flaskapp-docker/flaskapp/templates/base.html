@@ -15,9 +15,9 @@
         <h1 class="ui center aligned header">Shopping List</h1>
         {% for item in item_list %}
         <div class="ui segment">
-            <p class="ui big header">{{item["name"] }} | {{ item["quantity"] }}
-            <a class="ui blue button" href="/update/{{item["name"]}}">+</a>
-	    <a class="ui red button" href="/delete/{{item["name"]}}">-</a></p>
+            <p class="ui big header">{{item["Name"] }} | {{ item["Qty"] }}
+	    <a class="ui blue button" href="/update/{{item["Name"]}}&amp;{{item["Qty"]}}">+</a>
+	    <a class="ui red button" href="/delete/{{item["Name"]}}&amp;{{item["Qty"]}} ">-</a></p>
         </div>
         {% endfor %}
         <hr>
