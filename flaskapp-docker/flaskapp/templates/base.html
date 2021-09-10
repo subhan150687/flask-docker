@@ -17,7 +17,8 @@
         <div class="ui segment">
             <p class="ui big header">{{item["Name"] }} | {{ item["Qty"] }}
 	    <a class="ui blue button" href="/update/{{item["Name"]}}&amp;{{item["Qty"]}}">+</a>
-	    <a class="ui red button" href="/delete/{{item["Name"]}}&amp;{{item["Qty"]}} ">-</a></p>
+	    <a class="ui red button" href="/delete/{{item["Name"]}}&amp;{{item["Qty"]}} ">-</a>
+	    <a class="ui red button" href="/remove/{{item["Name"]}}">X</a></p>
         </div>
         {% endfor %}
         <hr>

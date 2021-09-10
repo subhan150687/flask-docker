@@ -81,3 +81,7 @@ def delete(item_details):
             ReturnValues="UPDATED_NEW")
     return redirect(url_for("home"))
 
+@app.route("/remove/<string:item_name>")
+def remove(item_name):  
+    response = table.delete_item(Key={'Name':item_name})
+    return redirect(url_for("home"))
