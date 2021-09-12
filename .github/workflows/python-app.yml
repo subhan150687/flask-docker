@@ -40,9 +40,3 @@ jobs:
           repository: smsubhan/nginx
           dockerfile: nginx/Dockerfile
           tags: latest
-          
-          
-          image: docker-hub-repo/image-name
-          -registry: docker.io
-          -username: ${{ secrets.DOCKER_USERNAME }}
-          -password: ${{ secrets.DOCKER_PASSWORD }}
