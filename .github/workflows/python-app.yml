@@ -21,7 +21,7 @@ jobs:
           image: smsubhan/flaskapp
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: smsubhan/flaskapp
+          registry: docker.io
           dockerfile: flaskapp-docker/Dockerfile
           tags: latest
   build-and-deploy-nginx:
@@ -37,6 +37,6 @@ jobs:
           image: smsubhan/nginx
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          repository: smsubhan/nginx
+          registry: docker.io
           dockerfile: nginx/Dockerfile
           tags: latest
