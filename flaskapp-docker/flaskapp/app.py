@@ -1,15 +1,16 @@
 from flask import Flask, render_template, request, redirect, url_for, json
 from flask_mail import Mail, Message
-from configparser import ConfigParser
+#from configparser import ConfigParser
+from os import environ
 
 import boto3
 
-config = ConfigParser()
-config.read('./config/keys_config.cfg')
+#config = ConfigParser()
+#config.read('./config/keys_config.cfg')
 
-AWS_ACCESS_KEYID = config.get('AWS', 'AWS_ACCESS_KEYID')
-AWS_SECRET_KEY = config.get('AWS', 'AWS_SECRET_KEY')
-AWS_REGION = config.get('AWS', 'AWS_REGION')
+AWS_ACCESS_KEYID = environ.get('AWS_ACCESS_KEYID')
+AWS_SECRET_KEY = environ.get('AWS', 'AWS_SECRET_KEY')
+AWS_REGION = environ.get('AWS', 'AWS_REGION')
 
 dynamodb = boto3.resource('dynamodb',aws_access_key_id=AWS_ACCESS_KEYID,aws_secret_access_key=AWS_SECRET_KEY,region_name=AWS_REGION)
 
