@@ -13,22 +13,28 @@
 <body>
     <div style="margin-top: 50px;" class="ui container">
         <h1 class="ui center aligned header">Shopping List</h1>
+
+        <div class="ui compact menu">
+	    <input type="hidden" name="SelCat">
+	    <div class="ui simple dropdown item">Select Category</div>
+	    <i class="dropdown icon"></i>
+	    <div class="menu">
+	    {% for cat in category_list %}
+	    	<div class="item">{{ cat }}</div>
+	    {% endfor %}
+	    </div>
+	</div>
+
+
         {% for item in item_list %}
         <div class="ui segment">
             <p class="ui big header">{{item["Name"] }} | {{ item["Qty"] }}
-	    <a class="ui blue button" href="/update/{{item["Name"]}}&amp;{{item["Qty"]}}">+</a>
-	    <a class="ui red button" href="/delete/{{item["Name"]}}&amp;{{item["Qty"]}} ">-</a>
-	    <a class="ui red button" href="/remove/{{item["Name"]}}">X</a></p>
+	    <a class="mini ui blue button" href="/update/{{item["Name"]}}&amp;{{item["Qty"]}}">+</a>
+	    <a class="mini ui red button" href="/delete/{{item["Name"]}}&amp;{{item["Qty"]}} ">-</a>
+	    <a class="mini ui red button" href="/remove/{{item["Name"]}}">X</a></p>
         </div>
         {% endfor %}
         <hr>
-        <form class="ui form" action="/add" method="post">
-            <div class="field">
-                <label>Item Name</label>
-                <input type="text" name="name" placeholder="Enter Item..."><br>
-            </div>
-            <button class="ui blue button" type="submit">Add</button>
-        </form>
         <form class="ui form" action="/send" method="post">
             <div class="field">
 		<label>message</label>
@@ -36,6 +42,8 @@
             </div>
             <button class="ui blue button" type="submit">Send</button>
         </form>
+	<hr>
+	<a class="ui label" href="/addItem">Add Item</a> 
     </div>
 </body>
 

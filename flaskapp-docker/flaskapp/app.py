@@ -1,12 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, json
 from flask_mail import Mail, Message
-#from configparser import ConfigParser
 from os import environ
-
 import boto3
-
-#config = ConfigParser()
-#config.read('./config/keys_config.cfg')
 
 AWS_ACCESS_KEYID = environ.get('AWS_ACCESS_KEYID')
 AWS_SECRET_KEY = environ.get('AWS_SECRET_KEY')
@@ -16,8 +11,6 @@ dynamodb = boto3.resource('dynamodb',aws_access_key_id=AWS_ACCESS_KEYID,aws_secr
 
 TableName = "Groceries"
 table = dynamodb.Table(TableName)
-
-
 
 app = Flask(__name__)
 
@@ -35,16 +28,26 @@ mail = Mail(app)
 def home():
     response = table.scan()
     item_list = response['Items']
-    return render_template("base.html", item_list=item_list)
+    category_list = []
+    for line in item_list:
+        if line["Cat"] not in category_list:
+            category_list.append(line["Cat"])
+    #print(category_list)
 
+    return render_template("base.html", item_list=item_list, category_list=category_list)
+
+@app.route("/addItem")
+def addItem():
+    return render_template("addItem.html")
 
 @app.route("/add", methods=["POST"])
 def add():
     name = request.form.get("name")
+    cat = request.form.get("cat")
     quantity = 0
-    new_item = {"Name":name, "Qty":quantity, "Cat":'default'}
+    new_item = {"Name":name, "Qty":quantity, "Cat":cat}
     response = table.put_item(Item=new_item)
-    return redirect(url_for("home"))
+    return redirect(url_for("addItem"))
 
 @app.route("/send", methods=["POST"])
 def send():
