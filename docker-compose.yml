@@ -4,6 +4,8 @@ services:
         flask:
                 build: ./flaskapp-docker
                 container_name: flask
+                env_file:
+                        - aws.env
                 ports:
                         - "8000:8000"
                 networks:
