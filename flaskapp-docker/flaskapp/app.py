@@ -9,8 +9,8 @@ import boto3
 #config.read('./config/keys_config.cfg')
 
 AWS_ACCESS_KEYID = environ.get('AWS_ACCESS_KEYID')
-AWS_SECRET_KEY = environ.get('AWS', 'AWS_SECRET_KEY')
-AWS_REGION = environ.get('AWS', 'AWS_REGION')
+AWS_SECRET_KEY = environ.get('AWS_SECRET_KEY')
+AWS_REGION = environ.get('AWS_REGION')
 
 dynamodb = boto3.resource('dynamodb',aws_access_key_id=AWS_ACCESS_KEYID,aws_secret_access_key=AWS_SECRET_KEY,region_name=AWS_REGION)
 
