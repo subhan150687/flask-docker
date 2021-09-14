@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, json
 from flask_mail import Mail, Message
 from os import environ
 import boto3
+from boto3.dynamodb.conditions import Key, Attr
 
 AWS_ACCESS_KEYID = environ.get('AWS_ACCESS_KEYID')
 AWS_SECRET_KEY = environ.get('AWS_SECRET_KEY')
@@ -32,9 +33,18 @@ def home():
     for line in item_list:
         if line["Cat"] not in category_list:
             category_list.append(line["Cat"])
-    #print(category_list)
+    return render_template("base.html", category_list=category_list)
 
-    return render_template("base.html", item_list=item_list, category_list=category_list)
+@app.route("/catitemslist", methods=["POST"])
+def catitemslist():
+    cat = request.form.get("SelCat")
+    if cat == "all":
+        response = table.scan()
+    else:
+        response = table.scan(FilterExpression=Attr('Cat').contains(cat))
+    item_list = response['Items']
+    return render_template("catitemslist.html", item_list=item_list)
+
 
 @app.route("/addItem")
 def addItem():
@@ -71,7 +81,7 @@ def update(item_details):
             UpdateExpression='SET Qty= :newQty',
             ExpressionAttributeValues={':newQty':str(int(Qty)+1)},
             ReturnValues="UPDATED_NEW")
-    return redirect(url_for("home"))
+    return redirect(url_for("catitemslist"))
 
 
 @app.route("/delete/<string:item_details>")
@@ -83,9 +93,9 @@ def delete(item_details):
             UpdateExpression='SET Qty= :newQty',
             ExpressionAttributeValues={':newQty':str(int(Qty)-1)},
             ReturnValues="UPDATED_NEW")
-    return redirect(url_for("home"))
+    return redirect(url_for("catitemslist"))
 
 @app.route("/remove/<string:item_name>")
 def remove(item_name):  
     response = table.delete_item(Key={'Name':item_name})
-    return redirect(url_for("home"))
+    return redirect(url_for("catitemslist"))
